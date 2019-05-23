@@ -1,6 +1,6 @@
 package drawer.chart;
 
-class Preferences {
+class ChartOptions {
     /*
         Preferred sizes as width and height of the chart window
      */
@@ -11,5 +11,4 @@ class Preferences {
      */
     static final String X_AXIS_LABEL = "X";
     static final String Y_AXIS_LABEl = "Y";
-
 }

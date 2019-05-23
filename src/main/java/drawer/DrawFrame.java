@@ -1,24 +1,33 @@
 package drawer;
 
 import drawer.chart.ChartFrame;
+import drawer.chart.FunctionConstants;
+import drawer.validation.InputDataValidator;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class DrawFrame extends JFrame {
-    private StringBuilder title = new StringBuilder("Draw Frame");
     private StringBuilder function;
 
     public DrawFrame(){
-        this.setTitle(title.toString());
-        this.setPreferredSize(
-                new Dimension(Preferences.FRAME_WIDTH, Preferences.FRAME_HEIGHT)
+        this.setTitle(
+                GeneralOptions.TITLE
         );
-        this.setResizable(false);
+        this.setPreferredSize(
+                new Dimension(
+                        GeneralOptions.FRAME_WIDTH,
+                        GeneralOptions.FRAME_HEIGHT
+                )
+        );
+        this.setResizable(
+                GeneralOptions.RESIZABILITY
+        );
     }
 
     public DrawFrame draw(String function){
-        this.function = new StringBuilder(function);
+        this.function =
+                new StringBuilder(function);
         return this;
     }
 
@@ -28,19 +37,74 @@ public class DrawFrame extends JFrame {
                     "Error. You haven't defined the function to draw!"
             );
         } else {
-            JPanel desk = new JPanel();
-            ChartFrame chart = new ChartFrame(title.toString(), getFunction());
+            JOptionPane
+                    .showMessageDialog(this,
+                            "Welcome to the function draw program! Input the data before setting up the graphic."
+                    );
+
+            FunctionConstants.STEP
+                    = Double.parseDouble(
+                            InputDataValidator.digit(
+                                    JOptionPane.showInputDialog(
+                                        "Input the function step"
+                                    )
+                            )
+            );
+
+            FunctionConstants.LEFT_BORDER
+                    = Double.parseDouble(
+                            InputDataValidator.digit(
+                                    JOptionPane.showInputDialog(
+                                        "Input the function left border"
+                            )
+                    )
+            );
+
+            FunctionConstants.RIGHT_BORDER
+                    = Double.parseDouble(
+                            InputDataValidator.digit(
+                                    JOptionPane.showInputDialog(
+                                        "Input the function right border"
+                            )
+                    )
+            );
+
+            FunctionConstants.PARAMETER
+                    = Double.parseDouble(
+                            InputDataValidator.digit(
+                                    JOptionPane.showInputDialog(
+                                        "Input the function parameter"
+                            )
+                    )
+            );
+
+            ChartFrame chart
+                    = new ChartFrame(
+                        GeneralOptions.TITLE,
+                        getFunction()
+            );
             chart.draw(getFunction());
             chart.display();
+
+            GeneralOptions.SAVE
+                    = InputDataValidator.confirmation(
+                            JOptionPane.showInputDialog(
+                                "Do you want to save graphic? (Y/N)"
+                    )
+            );
+
+            if(GeneralOptions.SAVE == 'Y'){
+                chart.saveGraphicAsPNG();
+            }
         }
     }
 
-    public String getFunction(){
+    private String getFunction(){
         return function.toString();
     }
 
     @Override
     public String toString() {
-        return this.getTitle();
+        return GeneralOptions.TITLE;
     }
 }
