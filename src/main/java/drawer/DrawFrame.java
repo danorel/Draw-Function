@@ -5,6 +5,7 @@ import drawer.chart.FunctionConstants;
 import drawer.validation.InputDataValidator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 
 public class DrawFrame extends JFrame {
@@ -37,64 +38,78 @@ public class DrawFrame extends JFrame {
                     "Error. You haven't defined the function to draw!"
             );
         } else {
-            JOptionPane
-                    .showMessageDialog(this,
-                            "Welcome to the function draw program! Input the data before setting up the graphic."
-                    );
+            while(GeneralOptions.CONTINUE) {
+                JOptionPane
+                        .showMessageDialog(this,
+                                "Welcome to the function draw program! Input the data before setting up the graphic."
+                        );
 
-            FunctionConstants.STEP
-                    = Double.parseDouble(
-                            InputDataValidator.digit(
-                                    JOptionPane.showInputDialog(
+                FunctionConstants.STEP
+                        = Double.parseDouble(
+                        InputDataValidator.digit(
+                                JOptionPane.showInputDialog(
                                         "Input the function step"
-                                    )
-                            )
-            );
+                                )
+                        )
+                );
 
-            FunctionConstants.LEFT_BORDER
-                    = Double.parseDouble(
-                            InputDataValidator.digit(
-                                    JOptionPane.showInputDialog(
+                FunctionConstants.LEFT_BORDER
+                        = Double.parseDouble(
+                        InputDataValidator.digit(
+                                JOptionPane.showInputDialog(
                                         "Input the function left border"
-                            )
-                    )
-            );
+                                )
+                        )
+                );
 
-            FunctionConstants.RIGHT_BORDER
-                    = Double.parseDouble(
-                            InputDataValidator.digit(
-                                    JOptionPane.showInputDialog(
-                                        "Input the function right border"
-                            )
-                    )
-            );
-
-            FunctionConstants.PARAMETER
-                    = Double.parseDouble(
-                            InputDataValidator.digit(
-                                    JOptionPane.showInputDialog(
+                FunctionConstants.PARAMETER
+                        = Double.parseDouble(
+                        InputDataValidator.digit(
+                                JOptionPane.showInputDialog(
                                         "Input the function parameter"
-                            )
-                    )
-            );
+                                )
+                        )
+                );
 
-            ChartFrame chart
-                    = new ChartFrame(
-                        GeneralOptions.TITLE,
-                        getFunction()
-            );
-            chart.draw(getFunction());
-            chart.display();
+                ChartFrame chart
+                        = new ChartFrame(
+                            GeneralOptions.TITLE,
+                            getFunction()
+                );
+                chart.draw(getFunction());
+                chart.display();
 
-            GeneralOptions.SAVE
-                    = InputDataValidator.confirmation(
+                GeneralOptions.SAVE
+                        = InputDataValidator.confirmation(
                             JOptionPane.showInputDialog(
-                                "Do you want to save graphic? (Y/N)"
-                    )
-            );
+                                    "Do you want to save graphic? (Y/N)"
+                            )
+                );
 
-            if(GeneralOptions.SAVE == 'Y'){
-                chart.saveGraphicAsPNG();
+                if (GeneralOptions.SAVE == 'Y') {
+                    JFileChooser jfc =
+                            new JFileChooser(
+                                    FileSystemView
+                                            .getFileSystemView()
+                                            .getHomeDirectory()
+                            );
+
+                    this.setVisible(true);
+
+                    int option = jfc.showSaveDialog(null);
+
+                    if (option == JFileChooser.APPROVE_OPTION) {
+                        GeneralOptions.SRC = jfc
+                                .getSelectedFile()
+                                .getAbsolutePath();
+                        chart.saveGraphicAsPNG();
+                    }
+                }
+
+                GeneralOptions.CONTINUE =
+                        InputDataValidator.bool(
+                                JOptionPane.showInputDialog("Want to draw one more time? (Y/N)")
+                        );
             }
         }
     }

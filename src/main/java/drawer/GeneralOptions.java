@@ -22,4 +22,8 @@ public class GeneralOptions {
         The default option for saving the graphic image
      */
     public static char SAVE = 'N';
+    /*
+        Tap Y to continue drawing the function
+     */
+    public static boolean CONTINUE = true;
 }

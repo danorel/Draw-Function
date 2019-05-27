@@ -53,6 +53,34 @@ public class InputDataValidator {
         return GeneralOptions.SAVE;
     }
 
+    public static boolean bool(String msg){
+        if(msg.length() != 1){
+            confirmation(
+                    JOptionPane.showInputDialog(
+                            "Error! The length of message is greater than 1. Valid symbols to enter: 'Y','N'. Would You like to save the image? (Y.N)"
+                    )
+            );
+        } else {
+            if(
+                    InputDataValidator.toIntegerFromChar(msg.charAt(0)) != ASCII.N
+                            &&
+                            InputDataValidator.toIntegerFromChar(msg.charAt(0)) != ASCII.Y){
+                confirmation(
+                        JOptionPane.showInputDialog(
+                                "Error! The length of message is greater than 1. Valid symbols to enter: 'Y','N'. Would You like to save the image? (Y.N)"
+                        )
+                );
+            } else {
+                if(msg.charAt(0) == ASCII.Y){
+                    return true;
+                } else if(msg.charAt(0) == ASCII.N){
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     private static int toIntegerFromChar(char character){
         return (int) character;
     }
