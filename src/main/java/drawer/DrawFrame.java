@@ -38,7 +38,8 @@ public class DrawFrame extends JFrame {
                     "Error. You haven't defined the function to draw!"
             );
         } else {
-            while(GeneralOptions.CONTINUE) {
+            while(GeneralOptions.CONTINUE && GeneralOptions.CLICKED) {
+
                 JOptionPane
                         .showMessageDialog(this,
                                 "Welcome to the function draw program! Input the data before setting up the graphic."
@@ -46,8 +47,8 @@ public class DrawFrame extends JFrame {
 
                 FunctionConstants.STEP
                         = Double.parseDouble(
-                        InputDataValidator.digit(
-                                JOptionPane.showInputDialog(
+                                InputDataValidator.digit(
+                                    JOptionPane.showInputDialog(
                                         "Input the function step"
                                 )
                         )
@@ -96,21 +97,29 @@ public class DrawFrame extends JFrame {
 
                     this.setVisible(true);
 
-                    int option = jfc.showSaveDialog(null);
+                    int option = jfc.showSaveDialog(this);
 
                     if (option == JFileChooser.APPROVE_OPTION) {
                         GeneralOptions.SRC = jfc
                                 .getSelectedFile()
                                 .getAbsolutePath();
                         chart.saveGraphicAsPNG();
+                    } else {
+                        System.exit(0);
                     }
                 }
 
-                GeneralOptions.CONTINUE =
-                        InputDataValidator.bool(
-                                JOptionPane.showInputDialog("Want to draw one more time? (Y/N)")
-                        );
+                GeneralOptions.CLICKED = false;
+
+                while (!GeneralOptions.CLICKED) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
             }
+            System.exit(0);
         }
     }
 

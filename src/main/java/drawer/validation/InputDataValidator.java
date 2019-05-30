@@ -6,6 +6,16 @@ import javax.swing.*;
 
 public class InputDataValidator {
     public static String digit(String msg){
+        if(msg == null){
+            System.exit(0);
+        }
+        if(msg.length() == 0){
+            return digit(
+                    JOptionPane.showInputDialog(
+                            "Error! The input message length equals to 0. Input the valid data: {'0..9', '.'}"
+                    )
+            );
+        }
         boolean isValid = true;
         char []characters = msg.toCharArray();
         for (char character : characters) {
@@ -15,7 +25,7 @@ public class InputDataValidator {
             }
         }
         if(!isValid){
-            digit(
+            return digit(
                     JOptionPane.showInputDialog(
                             "Error! Input the valid data: {'0..9', '.'}"
                     )
@@ -30,8 +40,11 @@ public class InputDataValidator {
     }
 
     public static char confirmation(String msg){
+        if(msg == null){
+            return 'N';
+        }
         if(msg.length() != 1){
-            confirmation(
+            return confirmation(
                     JOptionPane.showInputDialog(
                          "Error! The length of message is greater than 1. Valid symbols to enter: 'Y','N'. Would You like to save the image? (Y.N)"
                     )
@@ -41,7 +54,7 @@ public class InputDataValidator {
                     InputDataValidator.toIntegerFromChar(msg.charAt(0)) != ASCII.N
                 &&
                     InputDataValidator.toIntegerFromChar(msg.charAt(0)) != ASCII.Y){
-                    confirmation(
+                    return confirmation(
                             JOptionPane.showInputDialog(
                                     "Error! The length of message is greater than 1. Valid symbols to enter: 'Y','N'. Would You like to save the image? (Y.N)"
                             )
@@ -50,14 +63,16 @@ public class InputDataValidator {
                 return msg.charAt(0);
             }
         }
-        return GeneralOptions.SAVE;
     }
 
     public static boolean bool(String msg){
+        if(msg == null){
+            System.exit(0);
+        }
         if(msg.length() != 1){
             confirmation(
                     JOptionPane.showInputDialog(
-                            "Error! The length of message is greater than 1. Valid symbols to enter: 'Y','N'. Would You like to save the image? (Y.N)"
+                            "Error! The length of message is greater than 1 or equals 0. Valid symbols to enter: 'Y','N'. Would You like to save the image? (Y.N)"
                     )
             );
         } else {

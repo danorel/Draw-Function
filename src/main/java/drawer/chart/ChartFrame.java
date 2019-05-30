@@ -1,6 +1,7 @@
 package drawer.chart;
 
 import drawer.GeneralOptions;
+import drawer.validation.InputDataValidator;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
@@ -11,7 +12,10 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -45,6 +49,22 @@ public class ChartFrame extends ApplicationFrame {
                                 ChartOptions.CHART_HEIGHT
                         )
         );
+        
+        JButton repaint = new JButton("Repaint");
+        repaint.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        GeneralOptions.CONTINUE =
+                                InputDataValidator.bool(
+                                        JOptionPane.showInputDialog("Want to draw one more time? (Y/N)")
+                                );
+                        GeneralOptions.CLICKED = true;
+                    }
+                }
+        );
+        canvas.add(repaint, BorderLayout.SOUTH);
+
         setContentPane(canvas);
     }
     /*
@@ -58,20 +78,20 @@ public class ChartFrame extends ApplicationFrame {
                 x < FunctionConstants.RIGHT_BORDER;
                 x += FunctionConstants.STEP
         ) {
-            positive_series.add(x, calculateFunction(x));
+            positive_series.add(x, f(x));
         }
         for(
                 double x = FunctionConstants.LEFT_BORDER;
                 x < FunctionConstants.RIGHT_BORDER;
                 x += FunctionConstants.STEP
         ) {
-            negative_series.add(x, -calculateFunction(x));
+            negative_series.add(x, -f(x));
         }
     }
     /*
         Calculating the function value, which corresponds to the task function
      */
-    private double calculateFunction(double x){
+    private double f(double x){
         return Math.sqrt(
                 (Math.pow(x, 3)/(FunctionConstants.PARAMETER - x))
         );

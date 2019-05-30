@@ -26,4 +26,6 @@ public class GeneralOptions {
         Tap Y to continue drawing the function
      */
     public static boolean CONTINUE = true;
+
+    public static boolean CLICKED = true;
 }
